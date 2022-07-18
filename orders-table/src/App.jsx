@@ -6,7 +6,7 @@ import './App.css'
 function App() {
   const [orders, setOrders] = useState([])
   const [ordersClone, setOrdersClone] = useState([])
-  const [ordersClone2, setOrdersClone2] = useState([])
+  
   
 useEffect(()=>{
   async function getOrders(){
@@ -14,10 +14,27 @@ useEffect(()=>{
     const data = await res.json()
     setOrders(data)
     setOrdersClone(data)
-    console.log("fetched");
+    
   }
   getOrders()
 },[])
+
+
+const [selectedBranch, setSelectedBranch] = useState()
+const [selectedService, setSelectedService] = useState()
+
+useEffect(()=>{
+ 
+  let result = orders;
+  
+  result = branchFilter(result);
+  console.log("result");
+  
+  result = serviceFilter(result);
+  setOrdersClone(result);
+  
+},[selectedBranch,selectedService])
+
 
 const populateOrder = ordersClone.map(order => {
   return <Order  key={order.id} order = {order}  />
@@ -37,44 +54,58 @@ const serviceName = uniqueService.map((service,id) => {
   return <option key={id} value={service}>{service}</option>
 })
 
-const filterItem1 = (value)=>{
-  const newItem = orders.filter((newVal) => {
-    return newVal.branch === value;
-  })
-  
-  setOrdersClone(newItem)
+const branchFilter = (value) => {
+  return value.filter((item) => item.branch.includes(selectedBranch))
 }
-const filterItem2 = (value)=>{
-  const newItem = ordersClone.filter((newVal) => {
-    return newVal.service === value;
-  })
-  
-  setOrdersClone2(newItem)
+const serviceFilter = (value) => {
+  if(selectedService === undefined){
+    return value.filter((item) => item.branch.includes(selectedBranch))
+  }else{
+    console.log(selectedService);
+  return value.filter((item) => item.service.includes(selectedService))
 }
+}
+
+// const branchFilter = (value)=>{
+//   const newItem = orders.filter((newVal) => {
+//     return newVal.branch === value;
+//   })
+  
+//   setOrdersClone(newItem)
+// }
+// const serviceFilter = (value)=>{
+//   const newItem = ordersClone.filter((newVal) => {
+//     return newVal.service === value;
+//   })
+  
+//   setOrdersClone2(newItem)
+// }
 
 
 
   return (
-    <>
+    <div className='orders--card'>
       <h1>Orders</h1>
       <div className="headers">
         <div className="filters">
-          <label >Filter by branch</label> <br />
-          <select onChange={(e)=>filterItem1(e.target.value)} name="branch" id="branch">
-            <option value="All">All</option>
-            {branchName}
-          </select> <br />
-
-          <label >Filter by service</label> <br />
-            <select onChange={(e)=>filterItem2(e.target.value)} name="service" id="service">
-              <option value="All">All</option>
-              {serviceName}
-            </select>
+          <div className='branch--filter'>
+            <label ><b> Filter by branch</b></label> <br />
+            <select className='dropdown' onChange={(e)=>setSelectedBranch(e.target.value)} name="branch" id="branch">
+              <option value="">All</option>
+              {branchName}
+            </select> 
+          </div>
+          <div className='service--filter'>
+            <label ><b> Filter by service</b></label> <br />
+              <select className='dropdown' onChange={(e)=>setSelectedService(e.target.value)} name="service" id="service">
+                <option value="">All</option>
+                {serviceName}
+              </select>
+            </div>
         </div>
-        <div className="mark--indicator">
-          <span className="mark--count">0</span>
-          <p>Mark as Complete</p>
-        </div>
+       
+          <p className="mark--indicator"><span className="mark--count">0</span>Mark as Complete</p>
+        
       </div>
       <table>
         <thead>
@@ -90,7 +121,7 @@ const filterItem2 = (value)=>{
           </thead>
           {populateOrder}
       </table>
-    </>
+    </div>
   )
 }
 

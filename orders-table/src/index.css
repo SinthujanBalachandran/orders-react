@@ -4,8 +4,69 @@
     box-sizing: border-box;
 }
 
+body {
+    min-height: 100vh;
+    padding: 5rem;
+    background-color: #ccc;
+}
+
 table,
 th,
 td {
-    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table,
+tr {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+td,
+th {
+    padding: 9px 5px;
+    text-align: left;
+}
+
+table {
+    width: 100%;
+}
+
+.orders--card {
+    padding: 2rem;
+    background: #fff;
+}
+
+.headers {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-block: 1rem;
+}
+
+.filters {
+    display: flex;
+}
+
+.dropdown {
+    width: 200px;
+    height: 30px;
+    margin-top: 5px;
+}
+
+.branch--filter {
+    margin-right: 1rem;
+}
+
+.mark--indicator {
+    color: #fff;
+    background-color: black;
+    padding: 5px 10px;
+}
+
+.mark--indicator .mark--count {
+    margin-right: 10px;
+    color: black;
+    background-color: #ccc;
+    padding: 3px;
+    border-radius: 50%;
 }
