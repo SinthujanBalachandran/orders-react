@@ -6,6 +6,8 @@ import './App.css'
 function App() {
   const [orders, setOrders] = useState([])
   const [ordersClone, setOrdersClone] = useState([])
+  const [selectedBranch, setSelectedBranch] = useState()
+  const [selectedService, setSelectedService] = useState()
   
   
 useEffect(()=>{
@@ -19,20 +21,11 @@ useEffect(()=>{
   getOrders()
 },[])
 
-
-const [selectedBranch, setSelectedBranch] = useState()
-const [selectedService, setSelectedService] = useState()
-
 useEffect(()=>{
- 
   let result = orders;
-  
   result = branchFilter(result);
-  console.log("result");
-  
   result = serviceFilter(result);
   setOrdersClone(result);
-  
 },[selectedBranch,selectedService])
 
 
@@ -42,46 +35,30 @@ const populateOrder = ordersClone.map(order => {
 
 
 const uniqueBranch = [...new Set(orders.map(branch => branch.branch))]
-
-
 const branchName = uniqueBranch.map((branch,id) => {
   return <option key={id} value={branch}>{branch}</option>
 })
 
-const uniqueService = [...new Set(orders.map(service => service.service))]
 
+const uniqueService = [...new Set(orders.map(service => service.service))]
 const serviceName = uniqueService.map((service,id) => {
   return <option key={id} value={service}>{service}</option>
 })
 
+
 const branchFilter = (value) => {
   return value.filter((item) => item.branch.includes(selectedBranch))
 }
+
+
 const serviceFilter = (value) => {
   if(selectedService === undefined){
     return value.filter((item) => item.branch.includes(selectedBranch))
   }else{
-    console.log(selectedService);
+    
   return value.filter((item) => item.service.includes(selectedService))
 }
 }
-
-// const branchFilter = (value)=>{
-//   const newItem = orders.filter((newVal) => {
-//     return newVal.branch === value;
-//   })
-  
-//   setOrdersClone(newItem)
-// }
-// const serviceFilter = (value)=>{
-//   const newItem = ordersClone.filter((newVal) => {
-//     return newVal.service === value;
-//   })
-  
-//   setOrdersClone2(newItem)
-// }
-
-
 
   return (
     <div className='orders--card'>
@@ -103,9 +80,7 @@ const serviceFilter = (value) => {
               </select>
             </div>
         </div>
-       
-          <p className="mark--indicator"><span className="mark--count">0</span>Mark as Complete</p>
-        
+           <button className="mark--indicator"><span className="mark--count">0</span>Mark as Complete</button> 
       </div>
       <table>
         <thead>
