@@ -98,7 +98,7 @@ const serviceFilter = (value) => {
           <div className='service--filter'>
             <label ><b> Filter by service</b></label> <br />
               <select className='dropdown' onChange={(e)=>setSelectedService(e.target.value)} name="service" id="service">
-                <option value="">All</option>
+                <option value="" >All</option>
                 {serviceName}
               </select>
             </div>
@@ -110,6 +110,7 @@ const serviceFilter = (value) => {
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>ORDER ID</th>
             <th>CUSTOMER</th>
             <th>ADDED BY</th>
